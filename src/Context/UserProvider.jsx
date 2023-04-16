@@ -7,14 +7,20 @@ function Userprovider({ children }) {
   const [Password, setPassword] = useState("");
   const [Username, setUsername] = useState("");
   const [User, setUser] = useState("");
-  const [SessionCheck, setSessionCheck] = useState();
+  const [SessionCheck, setSessionCheck] = useState(false);
 
   const handlesession = async () => {
     const { data, error } = await supabase.auth.getSession();
 
-    setUsername(data.session.user.user_metadata.username);
-    setUser(data.session.user.id);
-    console.log(error);
+    if (data) {
+      try {
+        setUsername(data.session.user.user_metadata.username);
+        setUser(data.session.user.id);
+        setSessionCheck(true)
+      } catch (error) {
+        setSessionCheck(true)
+      }
+    }
   };
 
   useEffect(() => {

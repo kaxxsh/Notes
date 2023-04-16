@@ -6,19 +6,28 @@ import { useNavigate } from "react-router-dom";
 function Notes() {
   const [Data, setData] = useState("");
   const [Todos, setTodos] = useState([]);
-  const { Username, User } = useContext(UserContext);
+  const { Username, User, SessionCheck } = useContext(UserContext);
   const Navigate = useNavigate();
 
   const handleAdd = async () => {
     setTodos((prev) => [...prev, Data]);
     console.log(Todos);
+
+    const { error } = await supabase
+      .from("Notes")
+      .update({ data: Todos })
+      .eq("Username", Username);
+
+    console.log(error);
   };
 
   useEffect(() => {
-    if (!User) {
-      Navigate("/");
+    if (SessionCheck) {
+      if (!User) {
+        Navigate("/");
+      }
     }
-  }, [User]);
+  }, [SessionCheck, User]);
 
   return (
     <>
@@ -29,6 +38,7 @@ function Notes() {
         onChange={(e) => setData(e.target.value)}
       />
       <button onClick={handleAdd}>Add</button>
+      {Todos.map((items) => items)}
     </>
   );
 }

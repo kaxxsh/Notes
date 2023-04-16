@@ -15,8 +15,9 @@ function Signin() {
       email: Email,
       password: Password,
     });
-
-    {!error && navigate("/notes") }
+    {
+      !error && navigate("/notes");
+    }
   };
   return (
     <div className="Signin-Container">

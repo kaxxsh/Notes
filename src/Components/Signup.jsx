@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../Style/Signup.css";
 import supabase from "../supabase";
 import { UserContext } from "../Context/UserProvider";
@@ -16,6 +16,7 @@ function Signup() {
     User,
     setUser,
   } = useContext(UserContext);
+
   const Navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -35,12 +36,13 @@ function Signup() {
 
     const { Error } = await supabase
       .from("Notes")
-      .insert({ Username: Username, userid: User });
+      .insert({ Username: Username, Userid: User });
 
     if (error || Error) {
       alert(error.message);
+      console.log(Error);
     } else {
-      Navigate("/notes");
+      Navigate("/");
     }
   };
   return (
