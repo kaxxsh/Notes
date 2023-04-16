@@ -1,32 +1,28 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import supabase from "../supabase";
 import { UserContext } from "../Context/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 function Notes() {
   const [Data, setData] = useState("");
   const [Todos, setTodos] = useState([]);
-  const { Username } = useContext(UserContext);
+  const { Username, User } = useContext(UserContext);
+  const Navigate = useNavigate();
 
   const handleAdd = async () => {
     setTodos((prev) => [...prev, Data]);
     console.log(Todos);
   };
 
-  const handleinsert = async () => {
-    const { error } = await supabase
-      .from("*")
-      .update({ Data: Todos })
-      .eq("Username", Username);
-
-    console.log(error);
-  };
-
   useEffect(() => {
-    handleinsert();
-  }, [Todos]);
+    if (!User) {
+      Navigate("/");
+    }
+  }, [User]);
 
   return (
     <>
+      hi, welcome back {Username}
       <input
         type="text"
         value={Data}

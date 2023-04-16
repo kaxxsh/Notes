@@ -10,18 +10,17 @@ function Userprovider({ children }) {
   const [SessionCheck, setSessionCheck] = useState();
 
   const handlesession = async () => {
-    const {
-      data: { Username },
-    } = await supabase.auth.getUser();
-  console.log(Username);
+    const { data, error } = await supabase.auth.getSession();
+
+    setUsername(data.session.user.user_metadata.username);
+    setUser(data.session.user.id);
+    console.log(error);
   };
 
   useEffect(() => {
-    handlesession
-  }, [])
-  
+    handlesession();
+  }, []);
 
-  
   return (
     <UserContext.Provider
       value={{
