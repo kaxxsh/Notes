@@ -31,6 +31,7 @@ function Signup() {
         },
       },
     });
+    console.log(error);
 
     setUser(data.user.id);
 
